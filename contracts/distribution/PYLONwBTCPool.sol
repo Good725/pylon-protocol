@@ -592,17 +592,17 @@ contract IRewardDistributionRecipient is Ownable {
 pragma solidity ^0.5.0;
 
 
+
 interface PYLON {
     function pylonsScalingFactor() external returns (uint256);
 }
-
 
 
 contract LPTokenWrapper {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
-    IERC20 public comp = IERC20(0xc00e94Cb662C3520282E6f5717214004A7f26888);
+    IERC20 public wbtc = IERC20(0xC11b1268C1A384e55C48c2391d8d480264A3A7F4);
 
     uint256 private _totalSupply;
     mapping(address => uint256) private _balances;
@@ -618,17 +618,17 @@ contract LPTokenWrapper {
     function stake(uint256 amount) public {
         _totalSupply = _totalSupply.add(amount);
         _balances[msg.sender] = _balances[msg.sender].add(amount);
-        comp.safeTransferFrom(msg.sender, address(this), amount);
+        wbtc.safeTransferFrom(msg.sender, address(this), amount);
     }
 
     function withdraw(uint256 amount) public {
         _totalSupply = _totalSupply.sub(amount);
         _balances[msg.sender] = _balances[msg.sender].sub(amount);
-        comp.safeTransfer(msg.sender, amount);
+        wbtc.safeTransfer(msg.sender, amount);
     }
 }
 
-contract PYLONCOMPPool is LPTokenWrapper, IRewardDistributionRecipient {
+contract PYLONwBTCPool is LPTokenWrapper, IRewardDistributionRecipient {
     IERC20 public pylon = IERC20(0x0e2298E3B3390e3b945a5456fBf59eCc3f55DA16);
     uint256 public constant DURATION = 864000; // 10 days
 
@@ -645,7 +645,7 @@ contract PYLONCOMPPool is LPTokenWrapper, IRewardDistributionRecipient {
     event Withdrawn(address indexed user, uint256 amount);
     event RewardPaid(address indexed user, uint256 reward);
 
-    modifier checkStart() {
+    modifier checkStart(){
         require(block.timestamp >= starttime,"not start");
         _;
     }

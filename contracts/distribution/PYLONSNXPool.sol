@@ -630,7 +630,7 @@ contract LPTokenWrapper {
 
 contract PYLONSNXPool is LPTokenWrapper, IRewardDistributionRecipient {
     IERC20 public pylon = IERC20(0x0e2298E3B3390e3b945a5456fBf59eCc3f55DA16);
-    uint256 public constant DURATION = 625000; // ~7 1/4 days
+    uint256 public constant DURATION = 864000; // 10 days
 
     uint256 public starttime = 1597172400; // 2020-08-11 19:00:00 (UTC UTC +00:00)
     uint256 public periodFinish = 0;

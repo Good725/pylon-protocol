@@ -24,8 +24,8 @@ async function deployToken(deployer, network) {
     await deployer.deploy(PYLONProxy,
       "PYLON",
       "PYLON",
-      18,
-      "9000000000000000000000000", // print extra few mil for user
+      18, // wei to ETH
+      "8400000000000000000000", // print extra few mil for user
       PYLONImplementation.address,
       "0x"
     );
@@ -34,7 +34,7 @@ async function deployToken(deployer, network) {
       "PYLON",
       "PYLON",
       18,
-      "2000000000000000000000000",
+      "8400000000000000000000",
       PYLONImplementation.address,
       "0x"
     );

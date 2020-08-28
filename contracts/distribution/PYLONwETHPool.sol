@@ -602,7 +602,7 @@ contract LPTokenWrapper {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
-    IERC20 public comp = IERC20(0xc00e94Cb662C3520282E6f5717214004A7f26888);
+    IERC20 public weth = IERC20(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2);
 
     uint256 private _totalSupply;
     mapping(address => uint256) private _balances;
@@ -618,18 +618,18 @@ contract LPTokenWrapper {
     function stake(uint256 amount) public {
         _totalSupply = _totalSupply.add(amount);
         _balances[msg.sender] = _balances[msg.sender].add(amount);
-        comp.safeTransferFrom(msg.sender, address(this), amount);
+        weth.safeTransferFrom(msg.sender, address(this), amount);
     }
 
     function withdraw(uint256 amount) public {
         _totalSupply = _totalSupply.sub(amount);
         _balances[msg.sender] = _balances[msg.sender].sub(amount);
-        comp.safeTransfer(msg.sender, amount);
+        weth.safeTransfer(msg.sender, amount);
     }
 }
 
-contract PYLONCOMPPool is LPTokenWrapper, IRewardDistributionRecipient {
-    IERC20 public pylon = IERC20(0x0e2298E3B3390e3b945a5456fBf59eCc3f55DA16);
+contract PYLONwETHPool is LPTokenWrapper, IRewardDistributionRecipient {
+    IERC20 public pylon = IERC20(0x0e2298E3B3390e3b945a5456fBf59eCc3f55DA16); // token - etherscan.io
     uint256 public constant DURATION = 864000; // 10 days
 
     uint256 public starttime = 1597172400; // 2020-08-11 19:00:00 (UTC UTC +00:00)

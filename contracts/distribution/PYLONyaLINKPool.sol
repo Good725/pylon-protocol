@@ -602,8 +602,7 @@ contract LPTokenWrapper {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
-    IERC20 public comp = IERC20(0xc00e94Cb662C3520282E6f5717214004A7f26888);
-
+    IERC20 public link = IERC20(0x4bE1Afc674A2F4056f6c5189f938f3083dcbad14);
     uint256 private _totalSupply;
     mapping(address => uint256) private _balances;
 
@@ -618,17 +617,17 @@ contract LPTokenWrapper {
     function stake(uint256 amount) public {
         _totalSupply = _totalSupply.add(amount);
         _balances[msg.sender] = _balances[msg.sender].add(amount);
-        comp.safeTransferFrom(msg.sender, address(this), amount);
+        link.safeTransferFrom(msg.sender, address(this), amount);
     }
 
     function withdraw(uint256 amount) public {
         _totalSupply = _totalSupply.sub(amount);
         _balances[msg.sender] = _balances[msg.sender].sub(amount);
-        comp.safeTransfer(msg.sender, amount);
+        link.safeTransfer(msg.sender, amount);
     }
 }
 
-contract PYLONCOMPPool is LPTokenWrapper, IRewardDistributionRecipient {
+contract PYLONyaLINKPool is LPTokenWrapper, IRewardDistributionRecipient {
     IERC20 public pylon = IERC20(0x0e2298E3B3390e3b945a5456fBf59eCc3f55DA16);
     uint256 public constant DURATION = 864000; // 10 days
 

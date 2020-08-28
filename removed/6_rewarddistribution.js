@@ -16,10 +16,10 @@ const Gov = artifacts.require("GovernorAlpha");
 const Timelock = artifacts.require("Timelock");
 
 // deployed fourth
-const PYLON_ETHPool = artifacts.require("PYLONETHPool");
-const PYLON_uAMPLPool = artifacts.require("PYLONAMPLPool");
+const PYLON_ETHPool = artifacts.require("PYLONwETHPool");
+const PYLON_uAMPLPool = artifacts.require("PYLONwBTCPool");
 const PYLON_YFIPool = artifacts.require("PYLONYFIPool");
-const PYLON_LINKPool = artifacts.require("PYLONLINKPool");
+const PYLON_LINKPool = artifacts.require("PYLONyaLINKPool");
 const PYLON_MKRPool = artifacts.require("PYLONMKRPool");
 const PYLON_LENDPool = artifacts.require("PYLONLENDPool");
 const PYLON_COMPPool = artifacts.require("PYLONCOMPPool");
