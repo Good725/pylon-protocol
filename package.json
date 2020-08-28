@@ -1,7 +1,7 @@
 {
-  "name": "yam",
+  "name": "pylon",
   "version": "1.0.0",
-  "description": "YAM protocol repo",
+  "description": "PYLON protocol repo",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +11,9 @@
   "dependencies": {
     "dotenv-flow": "^3.2.0",
     "ethers": "^5.0.8",
-    "ganache-core": "^2.11.2"
+    "ganache-cli": "^6.10.1",
+    "ganache-core": "^2.11.2",
+    "truffle-hdwallet-provider": "^1.0.17"
   },
   "devDependencies": {
     "@truffle/hdwallet-provider": "^1.0.40",

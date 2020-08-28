@@ -9,7 +9,7 @@
 /___/ \_, //_//_/\__//_//_/\__/ \__//_/ /_\_\
      /___/
 
-* Synthetix: YAMRewards.sol
+* Synthetix: PYLONRewards.sol
 *
 * Docs: https://docs.synthetix.io/
 *
@@ -592,17 +592,17 @@ contract IRewardDistributionRecipient is Ownable {
 pragma solidity ^0.5.0;
 
 
-interface YAM {
-    function yamsScalingFactor() external returns (uint256);
-}
 
+interface PYLON {
+    function pylonsScalingFactor() external returns (uint256);
+}
 
 
 contract LPTokenWrapper {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
-    IERC20 public lend = IERC20(0x80fB784B7eD66730e8b1DBd9820aFD29931aab03);
+    IERC20 public ampl_eth_uni_lp = IERC20(0xc5be99A02C6857f9Eac67BbCE58DF5572498F40c);
 
     uint256 private _totalSupply;
     mapping(address => uint256) private _balances;
@@ -618,18 +618,18 @@ contract LPTokenWrapper {
     function stake(uint256 amount) public {
         _totalSupply = _totalSupply.add(amount);
         _balances[msg.sender] = _balances[msg.sender].add(amount);
-        lend.safeTransferFrom(msg.sender, address(this), amount);
+        ampl_eth_uni_lp.safeTransferFrom(msg.sender, address(this), amount);
     }
 
     function withdraw(uint256 amount) public {
         _totalSupply = _totalSupply.sub(amount);
         _balances[msg.sender] = _balances[msg.sender].sub(amount);
-        lend.safeTransfer(msg.sender, amount);
+        ampl_eth_uni_lp.safeTransfer(msg.sender, amount);
     }
 }
 
-contract YAMLENDPool is LPTokenWrapper, IRewardDistributionRecipient {
-    IERC20 public yam = IERC20(0x0e2298E3B3390e3b945a5456fBf59eCc3f55DA16);
+contract PYLONAMPLPool is LPTokenWrapper, IRewardDistributionRecipient {
+    IERC20 public pylon = IERC20(0x0e2298E3B3390e3b945a5456fBf59eCc3f55DA16);
     uint256 public constant DURATION = 625000; // ~7 1/4 days
 
     uint256 public starttime = 1597172400; // 2020-08-11 19:00:00 (UTC UTC +00:00)
@@ -645,7 +645,7 @@ contract YAMLENDPool is LPTokenWrapper, IRewardDistributionRecipient {
     event Withdrawn(address indexed user, uint256 amount);
     event RewardPaid(address indexed user, uint256 reward);
 
-    modifier checkStart() {
+    modifier checkStart(){
         require(block.timestamp >= starttime,"not start");
         _;
     }
@@ -708,9 +708,9 @@ contract YAMLENDPool is LPTokenWrapper, IRewardDistributionRecipient {
         uint256 reward = earned(msg.sender);
         if (reward > 0) {
             rewards[msg.sender] = 0;
-            uint256 scalingFactor = YAM(address(yam)).yamsScalingFactor();
+            uint256 scalingFactor = PYLON(address(pylon)).pylonsScalingFactor();
             uint256 trueReward = reward.mul(scalingFactor).div(10**18);
-            yam.safeTransfer(msg.sender, trueReward);
+            pylon.safeTransfer(msg.sender, trueReward);
             emit RewardPaid(msg.sender, trueReward);
         }
     }

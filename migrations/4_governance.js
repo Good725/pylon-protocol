@@ -3,13 +3,13 @@
 
 // Token
 // deployed first
-const YAMImplementation = artifacts.require("YAMDelegate");
-const YAMProxy = artifacts.require("YAMDelegator");
+const PYLONImplementation = artifacts.require("PYLONDelegate");
+const PYLONProxy = artifacts.require("PYLONDelegator");
 
 // Rs
 // deployed second
-const YAMReserves = artifacts.require("YAMReserves");
-const YAMRebaser = artifacts.require("YAMRebaser");
+const PYLONReserves = artifacts.require("PYLONReserves");
+const PYLONRebaser = artifacts.require("PYLONRebaser");
 
 // Governance
 // deployed third
@@ -39,6 +39,6 @@ async function deployGovernance(deployer, network) {
   await deployer.deploy(Timelock);
   await deployer.deploy(Gov,
       Timelock.address,
-      YAMProxy.address
+      PYLONProxy.address
   );
 }

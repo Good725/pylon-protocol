@@ -1,4 +1,12 @@
 /**
+ *Submitted for verification at Etherscan.io on 2020-07-27
+*/
+
+/**
+ *Submitted for verification at Etherscan.io on 2020-07-26
+*/
+
+/**
  *Submitted for verification at Etherscan.io on 2020-07-17
 */
 
@@ -9,7 +17,7 @@
 /___/ \_, //_//_/\__//_//_/\__/ \__//_/ /_\_\
      /___/
 
-* Synthetix: YAMRewards.sol
+* Synthetix: PYLONIncentives.sol
 *
 * Docs: https://docs.synthetix.io/
 *
@@ -363,6 +371,7 @@ interface IERC20 {
      * Emits a {Transfer} event.
      */
     function transfer(address recipient, uint256 amount) external returns (bool);
+    function mint(address account, uint amount) external;
 
     /**
      * @dev Returns the remaining number of tokens that `spender` will be
@@ -570,7 +579,7 @@ pragma solidity ^0.5.0;
 
 
 contract IRewardDistributionRecipient is Ownable {
-    address public rewardDistribution;
+    address rewardDistribution;
 
     function notifyRewardAmount(uint256 reward) external;
 
@@ -592,9 +601,7 @@ contract IRewardDistributionRecipient is Ownable {
 pragma solidity ^0.5.0;
 
 
-interface YAM {
-    function yamsScalingFactor() external returns (uint256);
-}
+
 
 
 
@@ -602,9 +609,10 @@ contract LPTokenWrapper {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
-    IERC20 public link = IERC20(0x514910771AF9Ca656af840dff83E8264EcF986CA);
+    IERC20 public uni_lp = IERC20(0x2C7a51A357d5739C5C74Bf3C96816849d2c9F726);
 
     uint256 private _totalSupply;
+
     mapping(address => uint256) private _balances;
 
     function totalSupply() public view returns (uint256) {
@@ -618,21 +626,27 @@ contract LPTokenWrapper {
     function stake(uint256 amount) public {
         _totalSupply = _totalSupply.add(amount);
         _balances[msg.sender] = _balances[msg.sender].add(amount);
-        link.safeTransferFrom(msg.sender, address(this), amount);
+        uni_lp.safeTransferFrom(msg.sender, address(this), amount);
     }
 
     function withdraw(uint256 amount) public {
         _totalSupply = _totalSupply.sub(amount);
         _balances[msg.sender] = _balances[msg.sender].sub(amount);
-        link.safeTransfer(msg.sender, amount);
+        uni_lp.safeTransfer(msg.sender, amount);
     }
 }
 
-contract YAMLINKPool is LPTokenWrapper, IRewardDistributionRecipient {
-    IERC20 public yam = IERC20(0x0e2298E3B3390e3b945a5456fBf59eCc3f55DA16);
-    uint256 public constant DURATION = 625000; // ~7 1/4 days
+interface PYLON {
+    function pylonsScalingFactor() external returns (uint256);
+    function mint(address to, uint256 amount) external;
+}
 
-    uint256 public starttime = 1597172400; // 2020-08-11 19:00:00 (UTC UTC +00:00)
+contract PYLONIncentivizer is LPTokenWrapper, IRewardDistributionRecipient {
+    IERC20 public pylon = IERC20(0x0e2298E3B3390e3b945a5456fBf59eCc3f55DA16);
+    uint256 public constant DURATION = 625000;
+
+    uint256 public initreward = 15 * 10**5 * 10**18; // 1.5m
+    uint256 public starttime = 1597172400 + 24 hours; // 2020-08-12 19:00:00 (UTC UTC +00:00)
     uint256 public periodFinish = 0;
     uint256 public rewardRate = 0;
     uint256 public lastUpdateTime;
@@ -640,15 +654,11 @@ contract YAMLINKPool is LPTokenWrapper, IRewardDistributionRecipient {
     mapping(address => uint256) public userRewardPerTokenPaid;
     mapping(address => uint256) public rewards;
 
+
     event RewardAdded(uint256 reward);
     event Staked(address indexed user, uint256 amount);
     event Withdrawn(address indexed user, uint256 amount);
     event RewardPaid(address indexed user, uint256 reward);
-
-    modifier checkStart() {
-        require(block.timestamp >= starttime,"not start");
-        _;
-    }
 
     modifier updateReward(address account) {
         rewardPerTokenStored = rewardPerToken();
@@ -687,7 +697,7 @@ contract YAMLINKPool is LPTokenWrapper, IRewardDistributionRecipient {
     }
 
     // stake visibility is public as overriding LPTokenWrapper's stake() function
-    function stake(uint256 amount) public updateReward(msg.sender) checkStart {
+    function stake(uint256 amount) public updateReward(msg.sender) checkhalve checkStart {
         require(amount > 0, "Cannot stake 0");
         super.stake(amount);
         emit Staked(msg.sender, amount);
@@ -704,16 +714,36 @@ contract YAMLINKPool is LPTokenWrapper, IRewardDistributionRecipient {
         getReward();
     }
 
-    function getReward() public updateReward(msg.sender) checkStart {
+    function getReward() public updateReward(msg.sender) checkhalve checkStart {
         uint256 reward = earned(msg.sender);
         if (reward > 0) {
             rewards[msg.sender] = 0;
-            uint256 scalingFactor = YAM(address(yam)).yamsScalingFactor();
+            uint256 scalingFactor = PYLON(address(pylon)).pylonsScalingFactor();
             uint256 trueReward = reward.mul(scalingFactor).div(10**18);
-            yam.safeTransfer(msg.sender, trueReward);
+            pylon.safeTransfer(msg.sender, trueReward);
             emit RewardPaid(msg.sender, trueReward);
         }
     }
+
+    modifier checkhalve() {
+        if (block.timestamp >= periodFinish) {
+            initreward = initreward.mul(50).div(100);
+            uint256 scalingFactor = PYLON(address(pylon)).pylonsScalingFactor();
+            uint256 newRewards = initreward.mul(scalingFactor).div(10**18);
+            pylon.mint(address(this), newRewards);
+
+            rewardRate = initreward.div(DURATION);
+            periodFinish = block.timestamp.add(DURATION);
+            emit RewardAdded(initreward);
+        }
+        _;
+    }
+
+    modifier checkStart(){
+        require(block.timestamp >= starttime,"not start");
+        _;
+    }
+
 
     function notifyRewardAmount(uint256 reward)
         external
@@ -732,10 +762,32 @@ contract YAMLINKPool is LPTokenWrapper, IRewardDistributionRecipient {
           periodFinish = block.timestamp.add(DURATION);
           emit RewardAdded(reward);
         } else {
-          rewardRate = reward.div(DURATION);
+          require(pylon.balanceOf(address(this)) == 0, "already initialized");
+          pylon.mint(address(this), initreward);
+          rewardRate = initreward.div(DURATION);
           lastUpdateTime = starttime;
           periodFinish = starttime.add(DURATION);
           emit RewardAdded(reward);
         }
+    }
+
+
+    // This function allows governance to take unsupported tokens out of the
+    // contract, since this one exists longer than the other pools.
+    // This is in an effort to make someone whole, should they seriously
+    // mess up. There is no guarantee governance will vote to return these.
+    // It also allows for removal of airdropped tokens.
+    function governanceRecoverUnsupported(IERC20 _token, uint256 amount, address to)
+        external
+    {
+        // only gov
+        require(msg.sender == owner(), "!governance");
+        // cant take staked asset
+        require(_token != uni_lp, "uni_lp");
+        // cant take reward asset
+        require(_token != pylon, "pylon");
+
+        // transfer to
+        _token.safeTransfer(to, amount);
     }
 }

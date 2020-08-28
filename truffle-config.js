@@ -59,7 +59,7 @@ module.exports = {
       network_id: '42',
       provider: () => new HDWalletProvider(
         [process.env.DEPLOYER_PRIVATE_KEY],
-        'https://kovan.infura.io/v3/04c5f76635f24c70b28488be34dbd838',
+        'https://kovan.infura.io/v3/0938d3d84c34400eada0c2e5091d9618',
         0,
         1,
       ),
@@ -67,6 +67,17 @@ module.exports = {
       gas: 6900000,
       from: process.env.DEPLOYER_ACCOUNT,
       timeoutBlocks: 500,
+    },
+    ropsten: {
+      provider: () => new HDWalletProvider(
+        "dash good add razor hood lawn minor assault cousin trial intact express",
+        "https://ropsten.infura.io/v3/0938d3d84c34400eada0c2e5091d9618",
+        0,
+        1,
+      ),
+      from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F',
+      network_id: 3,
+      gas: 4000000      //make sure this gas allocation isn't over 4M, which is the max
     },
     dev: {
       host: 'localhost',

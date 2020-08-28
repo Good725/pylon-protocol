@@ -3,29 +3,29 @@
 
 // Protocol
 // deployed second
-const YAMImplementation = artifacts.require("YAMDelegate");
-const YAMProxy = artifacts.require("YAMDelegator");
+const PYLONImplementation = artifacts.require("PYLONDelegate");
+const PYLONProxy = artifacts.require("PYLONDelegator");
 
 // deployed third
-const YAMReserves = artifacts.require("YAMReserves");
-const YAMRebaser = artifacts.require("YAMRebaser");
+const PYLONReserves = artifacts.require("PYLONReserves");
+const PYLONRebaser = artifacts.require("PYLONRebaser");
 
 const Gov = artifacts.require("GovernorAlpha");
 const Timelock = artifacts.require("Timelock");
 
 // deployed fourth
-const YAM_ETHPool = artifacts.require("YAMETHPool");
-const YAM_uAMPLPool = artifacts.require("YAMAMPLPool");
-const YAM_YFIPool = artifacts.require("YAMYFIPool");
-const YAM_LINKPool = artifacts.require("YAMLINKPool");
-const YAM_MKRPool = artifacts.require("YAMMKRPool");
-const YAM_LENDPool = artifacts.require("YAMLENDPool");
-const YAM_COMPPool = artifacts.require("YAMCOMPPool");
-const YAM_SNXPool = artifacts.require("YAMSNXPool");
+const PYLON_ETHPool = artifacts.require("PYLONETHPool");
+const PYLON_uAMPLPool = artifacts.require("PYLONAMPLPool");
+const PYLON_YFIPool = artifacts.require("PYLONYFIPool");
+const PYLON_LINKPool = artifacts.require("PYLONLINKPool");
+const PYLON_MKRPool = artifacts.require("PYLONMKRPool");
+const PYLON_LENDPool = artifacts.require("PYLONLENDPool");
+const PYLON_COMPPool = artifacts.require("PYLONCOMPPool");
+const PYLON_SNXPool = artifacts.require("PYLONSNXPool");
 
 
 // deployed fifth
-const YAMIncentivizer = artifacts.require("YAMIncentivizer");
+const PYLONIncentivizer = artifacts.require("PYLONIncentivizer");
 
 // ============ Main Migration ============
 
@@ -44,44 +44,44 @@ module.exports = migration;
 
 async function deployDistribution(deployer, network, accounts) {
   console.log(network)
-  let yam = await YAMProxy.deployed();
-  let yReserves = await YAMReserves.deployed()
-  let yRebaser = await YAMRebaser.deployed()
+  let pylon = await PYLONProxy.deployed();
+  let yReserves = await PYLONReserves.deployed()
+  let yRebaser = await PYLONRebaser.deployed()
   let tl = await Timelock.deployed();
   let gov = await Gov.deployed();
   if (network != "test") {
-    await deployer.deploy(YAM_ETHPool);
-    await deployer.deploy(YAM_uAMPLPool);
-    await deployer.deploy(YAM_YFIPool);
-    await deployer.deploy(YAMIncentivizer);
-    await deployer.deploy(YAM_LINKPool);
-    await deployer.deploy(YAM_MKRPool);
-    await deployer.deploy(YAM_LENDPool);
-    await deployer.deploy(YAM_COMPPool);
-    await deployer.deploy(YAM_SNXPool);
+    await deployer.deploy(PYLON_ETHPool);
+    await deployer.deploy(PYLON_uAMPLPool);
+    await deployer.deploy(PYLON_YFIPool);
+    await deployer.deploy(PYLONIncentivizer);
+    await deployer.deploy(PYLON_LINKPool);
+    await deployer.deploy(PYLON_MKRPool);
+    await deployer.deploy(PYLON_LENDPool);
+    await deployer.deploy(PYLON_COMPPool);
+    await deployer.deploy(PYLON_SNXPool);
 
-    let eth_pool = new web3.eth.Contract(YAM_ETHPool.abi, YAM_ETHPool.address);
-    let ampl_pool = new web3.eth.Contract(YAM_uAMPLPool.abi, YAM_uAMPLPool.address);
-    let yfi_pool = new web3.eth.Contract(YAM_YFIPool.abi, YAM_YFIPool.address);
-    let lend_pool = new web3.eth.Contract(YAM_LENDPool.abi, YAM_LENDPool.address);
-    let mkr_pool = new web3.eth.Contract(YAM_MKRPool.abi, YAM_MKRPool.address);
-    let snx_pool = new web3.eth.Contract(YAM_SNXPool.abi, YAM_SNXPool.address);
-    let comp_pool = new web3.eth.Contract(YAM_COMPPool.abi, YAM_COMPPool.address);
-    let link_pool = new web3.eth.Contract(YAM_LINKPool.abi, YAM_LINKPool.address);
-    let ycrv_pool = new web3.eth.Contract(YAMIncentivizer.abi, YAMIncentivizer.address);
+    let eth_pool = new web3.eth.Contract(PYLON_ETHPool.abi, PYLON_ETHPool.address);
+    let ampl_pool = new web3.eth.Contract(PYLON_uAMPLPool.abi, PYLON_uAMPLPool.address);
+    let yfi_pool = new web3.eth.Contract(PYLON_YFIPool.abi, PYLON_YFIPool.address);
+    let lend_pool = new web3.eth.Contract(PYLON_LENDPool.abi, PYLON_LENDPool.address);
+    let mkr_pool = new web3.eth.Contract(PYLON_MKRPool.abi, PYLON_MKRPool.address);
+    let snx_pool = new web3.eth.Contract(PYLON_SNXPool.abi, PYLON_SNXPool.address);
+    let comp_pool = new web3.eth.Contract(PYLON_COMPPool.abi, PYLON_COMPPool.address);
+    let link_pool = new web3.eth.Contract(PYLON_LINKPool.abi, PYLON_LINKPool.address);
+    let ycrv_pool = new web3.eth.Contract(PYLONIncentivizer.abi, PYLONIncentivizer.address);
 
     console.log("setting distributor");
     await Promise.all([
-        eth_pool.methods.setRewardDistribution(accounts[0]).send({from: accounts[0], gas: 100000}),
-        ampl_pool.methods.setRewardDistribution(accounts[0]).send({from: accounts[0], gas: 100000}),
-        yfi_pool.methods.setRewardDistribution(accounts[0]).send({from: accounts[0], gas: 100000}),
-        ycrv_pool.methods.setRewardDistribution(accounts[0]).send({from: accounts[0], gas: 100000}),
-        lend_pool.methods.setRewardDistribution(accounts[0]).send({from: accounts[0], gas: 100000}),
-        mkr_pool.methods.setRewardDistribution(accounts[0]).send({from: accounts[0], gas: 100000}),
-        snx_pool.methods.setRewardDistribution(accounts[0]).send({from: accounts[0], gas: 100000}),
-        comp_pool.methods.setRewardDistribution(accounts[0]).send({from: accounts[0], gas: 100000}),
-        link_pool.methods.setRewardDistribution(accounts[0]).send({from: accounts[0], gas: 100000}),
-        ycrv_pool.methods.setRewardDistribution(accounts[0]).send({from: accounts[0], gas: 100000}),
+        eth_pool.methods.setRewardDistribution('0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F').send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+        ampl_pool.methods.setRewardDistribution('0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F').send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+        yfi_pool.methods.setRewardDistribution('0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F').send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+        ycrv_pool.methods.setRewardDistribution('0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F').send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+        lend_pool.methods.setRewardDistribution('0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F').send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+        mkr_pool.methods.setRewardDistribution('0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F').send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+        snx_pool.methods.setRewardDistribution('0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F').send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+        comp_pool.methods.setRewardDistribution('0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F').send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+        link_pool.methods.setRewardDistribution('0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F').send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+        ycrv_pool.methods.setRewardDistribution('0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F').send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
       ]);
 
     let two_fifty = web3.utils.toBN(10**3).mul(web3.utils.toBN(10**18)).mul(web3.utils.toBN(250));
@@ -90,64 +90,64 @@ async function deployDistribution(deployer, network, accounts) {
     console.log("transfering and notifying");
     console.log("eth");
     await Promise.all([
-      yam.transfer(YAM_ETHPool.address, two_fifty.toString()),
-      yam.transfer(YAM_uAMPLPool.address, two_fifty.toString()),
-      yam.transfer(YAM_YFIPool.address, two_fifty.toString()),
-      yam.transfer(YAM_LENDPool.address, two_fifty.toString()),
-      yam.transfer(YAM_MKRPool.address, two_fifty.toString()),
-      yam.transfer(YAM_SNXPool.address, two_fifty.toString()),
-      yam.transfer(YAM_COMPPool.address, two_fifty.toString()),
-      yam.transfer(YAM_LINKPool.address, two_fifty.toString()),
-      yam._setIncentivizer(YAMIncentivizer.address),
+      pylon.transfer(PYLON_ETHPool.address, two_fifty.toString()),
+      pylon.transfer(PYLON_uAMPLPool.address, two_fifty.toString()),
+      pylon.transfer(PYLON_YFIPool.address, two_fifty.toString()),
+      pylon.transfer(PYLON_LENDPool.address, two_fifty.toString()),
+      pylon.transfer(PYLON_MKRPool.address, two_fifty.toString()),
+      pylon.transfer(PYLON_SNXPool.address, two_fifty.toString()),
+      pylon.transfer(PYLON_COMPPool.address, two_fifty.toString()),
+      pylon.transfer(PYLON_LINKPool.address, two_fifty.toString()),
+      pylon._setIncentivizer(PYLONIncentivizer.address),
     ]);
 
     await Promise.all([
-      eth_pool.methods.notifyRewardAmount(two_fifty.toString()).send({from:accounts[0]}),
-      ampl_pool.methods.notifyRewardAmount(two_fifty.toString()).send({from:accounts[0]}),
-      yfi_pool.methods.notifyRewardAmount(two_fifty.toString()).send({from:accounts[0]}),
-      lend_pool.methods.notifyRewardAmount(two_fifty.toString()).send({from:accounts[0]}),
-      mkr_pool.methods.notifyRewardAmount(two_fifty.toString()).send({from:accounts[0]}),
-      snx_pool.methods.notifyRewardAmount(two_fifty.toString()).send({from:accounts[0]}),
-      comp_pool.methods.notifyRewardAmount(two_fifty.toString()).send({from:accounts[0]}),
-      link_pool.methods.notifyRewardAmount(two_fifty.toString()).send({from:accounts[0]}),
+      eth_pool.methods.notifyRewardAmount(two_fifty.toString()).send({from:'0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F'}),
+      ampl_pool.methods.notifyRewardAmount(two_fifty.toString()).send({from:'0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F'}),
+      yfi_pool.methods.notifyRewardAmount(two_fifty.toString()).send({from:'0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F'}),
+      lend_pool.methods.notifyRewardAmount(two_fifty.toString()).send({from:'0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F'}),
+      mkr_pool.methods.notifyRewardAmount(two_fifty.toString()).send({from:'0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F'}),
+      snx_pool.methods.notifyRewardAmount(two_fifty.toString()).send({from:'0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F'}),
+      comp_pool.methods.notifyRewardAmount(two_fifty.toString()).send({from:'0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F'}),
+      link_pool.methods.notifyRewardAmount(two_fifty.toString()).send({from:'0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F'}),
 
       // incentives is a minter and prepopulates itself.
-      ycrv_pool.methods.notifyRewardAmount("0").send({from: accounts[0], gas: 500000}),
+      ycrv_pool.methods.notifyRewardAmount("0").send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 500000}),
     ]);
 
     await Promise.all([
-      eth_pool.methods.setRewardDistribution(Timelock.address).send({from: accounts[0], gas: 100000}),
-      ampl_pool.methods.setRewardDistribution(Timelock.address).send({from: accounts[0], gas: 100000}),
-      yfi_pool.methods.setRewardDistribution(Timelock.address).send({from: accounts[0], gas: 100000}),
-      lend_pool.methods.setRewardDistribution(Timelock.address).send({from: accounts[0], gas: 100000}),
-      mkr_pool.methods.setRewardDistribution(Timelock.address).send({from: accounts[0], gas: 100000}),
-      snx_pool.methods.setRewardDistribution(Timelock.address).send({from: accounts[0], gas: 100000}),
-      comp_pool.methods.setRewardDistribution(Timelock.address).send({from: accounts[0], gas: 100000}),
-      link_pool.methods.setRewardDistribution(Timelock.address).send({from: accounts[0], gas: 100000}),
-      ycrv_pool.methods.setRewardDistribution(Timelock.address).send({from: accounts[0], gas: 100000}),
+      eth_pool.methods.setRewardDistribution(Timelock.address).send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+      ampl_pool.methods.setRewardDistribution(Timelock.address).send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+      yfi_pool.methods.setRewardDistribution(Timelock.address).send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+      lend_pool.methods.setRewardDistribution(Timelock.address).send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+      mkr_pool.methods.setRewardDistribution(Timelock.address).send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+      snx_pool.methods.setRewardDistribution(Timelock.address).send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+      comp_pool.methods.setRewardDistribution(Timelock.address).send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+      link_pool.methods.setRewardDistribution(Timelock.address).send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+      ycrv_pool.methods.setRewardDistribution(Timelock.address).send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
     ]);
     await Promise.all([
-      eth_pool.methods.transferOwnership(Timelock.address).send({from: accounts[0], gas: 100000}),
-      ampl_pool.methods.transferOwnership(Timelock.address).send({from: accounts[0], gas: 100000}),
-      yfi_pool.methods.transferOwnership(Timelock.address).send({from: accounts[0], gas: 100000}),
-      lend_pool.methods.transferOwnership(Timelock.address).send({from: accounts[0], gas: 100000}),
-      mkr_pool.methods.transferOwnership(Timelock.address).send({from: accounts[0], gas: 100000}),
-      snx_pool.methods.transferOwnership(Timelock.address).send({from: accounts[0], gas: 100000}),
-      comp_pool.methods.transferOwnership(Timelock.address).send({from: accounts[0], gas: 100000}),
-      link_pool.methods.transferOwnership(Timelock.address).send({from: accounts[0], gas: 100000}),
-      ycrv_pool.methods.transferOwnership(Timelock.address).send({from: accounts[0], gas: 100000}),
+      eth_pool.methods.transferOwnership(Timelock.address).send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+      ampl_pool.methods.transferOwnership(Timelock.address).send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+      yfi_pool.methods.transferOwnership(Timelock.address).send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+      lend_pool.methods.transferOwnership(Timelock.address).send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+      mkr_pool.methods.transferOwnership(Timelock.address).send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+      snx_pool.methods.transferOwnership(Timelock.address).send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+      comp_pool.methods.transferOwnership(Timelock.address).send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+      link_pool.methods.transferOwnership(Timelock.address).send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
+      ycrv_pool.methods.transferOwnership(Timelock.address).send({from: '0xe0C5DD869A841ec269E79cd86529C5F766CBBE7F', gas: 100000}),
     ]);
   }
 
   await Promise.all([
-    yam._setPendingGov(Timelock.address),
+    pylon._setPendingGov(Timelock.address),
     yReserves._setPendingGov(Timelock.address),
     yRebaser._setPendingGov(Timelock.address),
   ]);
 
   await Promise.all([
       tl.executeTransaction(
-        YAMProxy.address,
+        PYLONProxy.address,
         0,
         "_acceptGov()",
         "0x",
@@ -155,7 +155,7 @@ async function deployDistribution(deployer, network, accounts) {
       ),
 
       tl.executeTransaction(
-        YAMReserves.address,
+        PYLONReserves.address,
         0,
         "_acceptGov()",
         "0x",
@@ -163,7 +163,7 @@ async function deployDistribution(deployer, network, accounts) {
       ),
 
       tl.executeTransaction(
-        YAMRebaser.address,
+        PYLONRebaser.address,
         0,
         "_acceptGov()",
         "0x",

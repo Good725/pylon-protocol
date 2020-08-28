@@ -1,9 +1,9 @@
 pragma solidity 0.5.17;
 
-import "./YAMTokenStorage.sol";
-import "./YAMGovernanceStorage.sol";
+import "./PYLONTokenStorage.sol";
+import "./PYLONGovernanceStorage.sol";
 
-contract YAMTokenInterface is YAMTokenStorage, YAMGovernanceStorage {
+contract PYLONTokenInterface is PYLONTokenStorage, PYLONGovernanceStorage {
 
     /// @notice An event thats emitted when an account changes its delegate
     event DelegateChanged(address indexed delegator, address indexed fromDelegate, address indexed toDelegate);
@@ -14,7 +14,7 @@ contract YAMTokenInterface is YAMTokenStorage, YAMGovernanceStorage {
     /**
      * @notice Event emitted when tokens are rebased
      */
-    event Rebase(uint256 epoch, uint256 prevYamsScalingFactor, uint256 newYamsScalingFactor);
+    event Rebase(uint256 epoch, uint256 prevPYLONsScalingFactor, uint256 newPYLONsScalingFactor);
 
     /*** Gov Events ***/
 
