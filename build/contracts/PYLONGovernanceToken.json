@@ -1718,7 +1718,7 @@
                                 "name": "this",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 16953,
+                                "referencedDeclaration": 16797,
                                 "src": "1883:4:23",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_contract$_PYLONGovernanceToken_$16413",
@@ -9328,7 +9328,7 @@
                                 "name": "this",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 16953,
+                                "referencedDeclaration": 16797,
                                 "src": "1883:4:23",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_contract$_PYLONGovernanceToken_$16413",
@@ -16190,7 +16190,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-08-28T20:43:06.485Z",
+  "updatedAt": "2020-08-29T12:03:24.877Z",
   "devdoc": {
     "methods": {
       "delegate(address)": {

@@ -6350,7 +6350,7 @@
                             "name": "this",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 16967,
+                            "referencedDeclaration": 16811,
                             "src": "11077:4:22",
                             "typeDescriptions": {
                               "typeIdentifier": "t_contract$_PYLONDelegator_$15857",
@@ -6801,7 +6801,7 @@
                             "name": "this",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 16967,
+                            "referencedDeclaration": 16811,
                             "src": "11465:4:22",
                             "typeDescriptions": {
                               "typeIdentifier": "t_contract$_PYLONDelegator_$15857",
@@ -12591,7 +12591,7 @@
                             "name": "this",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 16967,
+                            "referencedDeclaration": 16811,
                             "src": "11077:4:22",
                             "typeDescriptions": {
                               "typeIdentifier": "t_contract$_PYLONDelegator_$15857",
@@ -13042,7 +13042,7 @@
                             "name": "this",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 16967,
+                            "referencedDeclaration": 16811,
                             "src": "11465:4:22",
                             "typeDescriptions": {
                               "typeIdentifier": "t_contract$_PYLONDelegator_$15857",
@@ -13842,8 +13842,7 @@
     }
   },
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-08-28T20:45:52.495Z",
-  "networkType": "ethereum",
+  "updatedAt": "2020-08-29T12:03:24.870Z",
   "devdoc": {
     "methods": {
       "_acceptGov()": {

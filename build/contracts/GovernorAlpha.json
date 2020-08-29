@@ -12431,7 +12431,7 @@
                                 "name": "this",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 16899,
+                                "referencedDeclaration": 16765,
                                 "src": "13372:4:7",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_contract$_GovernorAlpha_$9148",
@@ -29539,7 +29539,7 @@
                                 "name": "this",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 16899,
+                                "referencedDeclaration": 16765,
                                 "src": "13372:4:7",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_contract$_GovernorAlpha_$9148",
@@ -34946,7 +34946,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-08-28T20:43:06.377Z",
+  "updatedAt": "2020-08-29T12:03:24.678Z",
   "devdoc": {
     "methods": {}
   },

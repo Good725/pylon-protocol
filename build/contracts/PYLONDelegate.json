@@ -3567,8 +3567,7 @@
     }
   },
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-08-28T20:45:52.482Z",
-  "networkType": "ethereum",
+  "updatedAt": "2020-08-29T12:03:24.861Z",
   "devdoc": {
     "methods": {
       "_becomeImplementation(bytes)": {

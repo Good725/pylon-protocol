@@ -1851,7 +1851,7 @@
                               "name": "this",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 16955,
+                              "referencedDeclaration": 16799,
                               "src": "589:4:20",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_contract$_PYLONToken_$15181",
@@ -10714,7 +10714,7 @@
                         "name": "super",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 16958,
+                        "referencedDeclaration": 16802,
                         "src": "11151:5:20",
                         "typeDescriptions": {
                           "typeIdentifier": "t_super$_PYLON_$15247",
@@ -12243,7 +12243,7 @@
                               "name": "this",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 16955,
+                              "referencedDeclaration": 16799,
                               "src": "589:4:20",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_contract$_PYLONToken_$15181",
@@ -21106,7 +21106,7 @@
                         "name": "super",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 16958,
+                        "referencedDeclaration": 16802,
                         "src": "11151:5:20",
                         "typeDescriptions": {
                           "typeIdentifier": "t_super$_PYLON_$15247",
@@ -21814,7 +21814,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-08-28T20:43:06.288Z",
+  "updatedAt": "2020-08-29T12:03:24.842Z",
   "devdoc": {
     "methods": {
       "_setIncentivizer(address)": {
